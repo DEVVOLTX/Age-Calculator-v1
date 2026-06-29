@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Age Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+  <main class="container">
+    <div class="topbar">
+      <h1>حاسبة العمر (ميلادي + هجري) + أدوات زمن</h1>
+      <div class="theme-toggle">
+        <button id="themeToggle" type="button" class="ghost">الوضع: <span id="themeLabel">داكن</span></button>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab-buttons" role="tablist" aria-label="تبويبات">
+        <button type="button" class="tab-button active" data-tab="personal" role="tab" aria-selected="true">حاسبة العمر</button>
+        <button type="button" class="tab-button" data-tab="pet" role="tab" aria-selected="false">عمر الحيوانات الأليفة</button>
+        <button type="button" class="tab-button" data-tab="anniv" role="tab" aria-selected="false">ذكرى/فرق الزمن</button>
+      </div>
+    </div>
+
+    <!-- Tab 1: Personal Age Calculator -->
+    <section class="card tab-panel active" data-panel="personal">
+      <div class="tab-panel-inner">
+        <h2>بيانات الميلاد</h2>
+
+        <div class="row">
+          <label>
+            اليوم
+            <input id="birthDay" type="number" min="1" max="31" placeholder="مثال: 15" />
+          </label>
+          <label>
+            الشهر
+            <select id="birthMonth">
+              <option value="1">يناير</option>
+              <option value="2">فبراير</option>
+              <option value="3">مارس</option>
+              <option value="4">أبريل</option>
+              <option value="5">مايو</option>
+              <option value="6">يونيو</option>
+              <option value="7">يوليو</option>
+              <option value="8">أغسطس</option>
+              <option value="9">سبتمبر</option>
+              <option value="10">أكتوبر</option>
+              <option value="11">نوفمبر</option>
+              <option value="12">ديسمبر</option>
+            </select>
+          </label>
+          <label>
+            السنة
+            <input id="birthYear" type="number" min="1300" max="2600" placeholder="مثال: 1998" />
+          </label>
+        </div>
+
+        <div class="row">
+          <label class="switch">
+            <input id="calendarType" type="checkbox" />
+            <span>إدخال هجري بدل ميلادي</span>
+          </label>
+
+          <button id="setToday" type="button" class="ghost">لقد ولدت في يوم <span id="todayWeekday">-</span></button>
+        </div>
+
+        <div class="row">
+          <button id="calcAge" type="button">احسب العمر</button>
+          <button id="clearBtn" type="button" class="ghost">مسح</button>
+        </div>
+      </div>
+
+      <div class="result-wrap">
+        <h2>النتيجة</h2>
+        <div class="result-grid">
+          <div class="result-item">
+            <div class="label">البرج الفلكي</div>
+            <div class="value" id="zodiacSign">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">الجيل</div>
+            <div class="value" id="generation">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">حدث عالمي في سنة الميلاد</div>
+            <div class="value" id="historicalEvent">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">العمر بالسنوات</div>
+            <div class="value" id="ageYears">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">الأشهر</div>
+            <div class="value" id="ageMonths">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">الأيام</div>
+            <div class="value" id="ageDays">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">الثواني</div>
+            <div class="value" id="ageSeconds">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">المدة حتى يوم ميلادك القادم (أيام)</div>
+            <div class="value" id="nextBirthDays">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">المدة حتى يوم ميلادك القادم (ساعات)</div>
+            <div class="value" id="nextBirthHours">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">المدة حتى يوم ميلادك القادم (دقائق)</div>
+            <div class="value" id="nextBirthMinutes">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">المدة حتى يوم ميلادك القادم (ثواني)</div>
+            <div class="value" id="nextBirthSeconds">-</div>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="converted">
+          <p><strong>تاريخ الميلاد (ميلادي):</strong> <span id="birthMiladiText">-</span></p>
+          <p><strong>تاريخ الميلاد (هجري):</strong> <span id="birthHijriText">-</span></p>
+          <p><strong>تاريخ اليوم (ميلادي):</strong> <span id="todayMiladiText">-</span></p>
+          <p><strong>تاريخ اليوم (هجري):</strong> <span id="todayHijriText">-</span></p>
+        </div>
+
+        <p class="note">ملاحظة: التحويل الهجري/الميلادي يعتمد على تقويم مدني (تقريبي) شائع الاستخدام.</p>
+      </div>
+    </section>
+
+    <!-- Tab 2: Pet Age Calculator -->
+    <section class="card tab-panel" data-panel="pet" hidden>
+      <div class="tab-panel-inner">
+        <h2>حساب عمر الحيوانات الأليفة</h2>
+
+        <div class="row">
+          <label>
+            نوع الحيوان
+            <select id="petType">
+              <option value="cat">قط</option>
+              <option value="dog">كلب</option>
+              <option value="rabbit">أرنب</option>
+            </select>
+          </label>
+          <label>
+            عمر الحيوان (بالسنوات)
+            <input id="petAgeYears" type="number" min="0" max="50" step="0.1" placeholder="مثال: 3" />
+          </label>
+        </div>
+
+        <div class="row">
+          <button id="calcPetAge" type="button">احسب العمر البشري</button>
+          <button id="clearPetBtn" type="button" class="ghost">مسح</button>
+        </div>
+
+        <div class="result-grid" style="margin-top:14px;">
+          <div class="result-item">
+            <div class="label">العمر البشري (تقريبي)</div>
+            <div class="value" id="petAgeHuman">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">تفصيل</div>
+            <div class="value" id="petAgeHumanDetail">-</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Anniversary/Time Difference -->
+    <section class="card tab-panel" data-panel="anniv" hidden>
+      <div class="tab-panel-inner">
+        <h2>الذكرى السنوية المميزة / فرق الزمن</h2>
+
+        <div class="row">
+          <label>
+            يوم التاريخ
+            <input id="annDay" type="number" min="1" max="31" placeholder="مثال: 15" />
+          </label>
+          <label>
+            شهر التاريخ
+            <select id="annMonth">
+              <option value="1">يناير</option>
+              <option value="2">فبراير</option>
+              <option value="3">مارس</option>
+              <option value="4">أبريل</option>
+              <option value="5">مايو</option>
+              <option value="6">يونيو</option>
+              <option value="7">يوليو</option>
+              <option value="8">أغسطس</option>
+              <option value="9">سبتمبر</option>
+              <option value="10">أكتوبر</option>
+              <option value="11">نوفمبر</option>
+              <option value="12">ديسمبر</option>
+            </select>
+          </label>
+          <label>
+            سنة التاريخ
+            <input id="annYear" type="number" min="1300" max="2600" placeholder="مثال: 2016" />
+          </label>
+        </div>
+
+        <div class="row">
+          <button id="calcAnnDiff" type="button">احسب المدة</button>
+          <button id="clearAnnBtn" type="button" class="ghost">مسح</button>
+        </div>
+
+        <div class="result-grid" style="margin-top:14px;">
+          <div class="result-item">
+            <div class="label">السنوات</div>
+            <div class="value" id="annYears">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">الأشهر</div>
+            <div class="value" id="annMonths">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">الأيام</div>
+            <div class="value" id="annDays">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">الثواني</div>
+            <div class="value" id="annSeconds">-</div>
+          </div>
+        </div>
+
+        <p class="note" style="margin-top:10px;">هذا الحسب يعتمد على فرق الوقت بين التاريخ المحدد واليوم (بالقيمة المدنية/التقويم الميلادي).</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+

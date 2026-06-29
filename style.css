@@ -1,0 +1,345 @@
+:root{
+  /* لوحة ألوان: أسود + أزرق + أحمر */
+  --bg:#05070d;
+  --text:#eaf1ff;
+  --muted:#9fb1da;
+
+  --blue:#2f9bff;
+  --red:#ff2f55;
+
+  --cardA: rgba(255,255,255,.06);
+  --cardB: rgba(255,255,255,.02);
+
+  --border: rgba(255,255,255,.10);
+  --shadow: rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+
+:root{
+  --bg:#05070d;
+  --text:#eaf1ff;
+  --muted:#9fb1da;
+
+  --blue:#2f9bff;
+  --red:#ff2f55;
+
+  --cardA: rgba(255,255,255,.06);
+  --cardB: rgba(255,255,255,.02);
+
+  --border: rgba(255,255,255,.10);
+  --shadow: rgba(0,0,0,.55);
+
+  --focusRing: rgba(47,155,255,.65);
+  --typingGlow: rgba(47,155,255,.22);
+}
+
+:root[data-theme="light"]{
+  --bg:#f7f9ff;
+  --text:#071225;
+  --muted:#405170;
+
+  --border: rgba(7,18,37,.12);
+  --shadow: rgba(7,18,37,.18);
+  --cardA: rgba(7,18,37,.05);
+  --cardB: rgba(7,18,37,.02);
+
+  --focusRing: rgba(47,155,255,.45);
+  --typingGlow: rgba(47,155,255,.18);
+}
+
+body{
+
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  /* 3D/Depth في الخلفية */
+  background:
+    radial-gradient(900px 520px at 70% -120px, rgba(47,155,255,.35), transparent 60%),
+    radial-gradient(700px 420px at 18% 10%, rgba(255,47,85,.18), transparent 55%),
+    radial-gradient(900px 520px at 50% 115%, rgba(47,155,255,.10), transparent 60%),
+    var(--bg);
+
+  color:var(--text);
+}
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.theme-toggle{
+  display:flex;
+  align-items:center;
+}
+
+.container{
+  width:min(980px, 92vw);
+  margin:28px auto;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.card{
+  position:relative;
+  background:
+    linear-gradient(180deg, var(--cardA), var(--cardB));
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px;
+
+  /* 3D depth */
+  box-shadow:
+    0 22px 55px var(--shadow),
+    0 10px 22px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.10),
+    inset 0 -10px 28px rgba(0,0,0,.40);
+}
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:16px;
+  pointer-events:none;
+  background: linear-gradient(90deg, rgba(47,155,255,.18), rgba(255,47,85,.12));
+  opacity:.55;
+  mix-blend-mode:screen;
+}
+.card > *{position:relative; z-index:1}
+.card:hover{
+  transform: translateY(-2px);
+  transition: transform .18s ease;
+}
+h1{margin:0 0 6px; font-size:22px; letter-spacing:.2px}
+h2{margin:0 0 14px; font-size:16px; color:var(--muted); font-weight:800}
+.row{display:flex; gap:12px; align-items:center; flex-wrap:wrap;}
+label{flex:1; min-width:160px; color:var(--muted); font-size:13px; font-weight:600}
+input,select{
+  width:100%;
+  margin-top:8px;
+  padding:11px 12px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  color:var(--text);
+  outline:none;
+  min-height:44px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    inset 0 -10px 20px rgba(0,0,0,.35);
+}
+input:focus,select:focus{
+  border-color: rgba(47,155,255,.75);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10),
+    0 0 0 3px var(--focusRing);
+}
+
+/* تأثيرات عند الكتابة (glow + border shimmer) */
+input:not(:placeholder-shown):not(:focus),
+select:not(:focus){
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    inset 0 -10px 20px rgba(0,0,0,.35),
+    0 0 0 1px rgba(47,155,255,.22);
+}
+
+button{
+  background: linear-gradient(180deg, rgba(47,155,255,1), rgba(47,155,255,.86));
+  color:#031226;
+  border:none;
+  padding:12px 16px;
+  border-radius:12px;
+  font-weight:900;
+  cursor:pointer;
+
+  box-shadow:
+    0 18px 38px rgba(47,155,255,.22),
+    0 10px 22px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.22),
+    inset 0 -10px 22px rgba(0,0,0,.25);
+
+  transform: translateY(0);
+  transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+}
+button:hover{
+  filter:saturate(1.05) brightness(1.03);
+  transform: translateY(-2px);
+}
+button:active{
+  transform: translateY(0);
+}
+button.ghost{
+  background: transparent;
+  border:1px solid rgba(255,255,255,.18);
+  color:var(--text);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    inset 0 -10px 22px rgba(0,0,0,.20);
+}
+button.ghost:hover{
+  border-color: rgba(255,47,85,.55);
+  box-shadow:
+    0 0 0 3px rgba(255,47,85,.12),
+    inset 0 1px 0 rgba(255,255,255,.10),
+    inset 0 -10px 22px rgba(0,0,0,.20);
+}
+.switch{display:flex; align-items:center; gap:10px; min-width:260px}
+.switch input{width:20px; height:20px; margin:0}
+.result-grid{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap:12px;
+}
+
+@media (max-width: 760px){
+  .result-grid{grid-template-columns: repeat(2, minmax(0,1fr));}
+}
+
+@media (max-width: 480px){
+  .result-grid{grid-template-columns: 1fr 1fr;}
+}
+
+@media (max-width: 760px){
+  .container{margin:16px auto; gap:12px;}
+  .row{gap:10px; align-items:flex-start;}
+  label{min-width:unset;}
+  .result-grid{grid-template-columns: repeat(2, minmax(0,1fr));}
+  .switch{min-width:unset;}
+  .card:hover{transform:none;}
+}
+
+@media (max-width: 480px){
+  h1{font-size:20px}
+  h2{font-size:15px}
+  label{font-size:12.5px}
+  input,select{padding:12px 12px; min-height:44px;}
+  button{width:100%; padding:12px 14px;}
+  .row{flex-direction:column; align-items:stretch;}
+  .result-grid{grid-template-columns: 1fr 1fr;}
+  .value{font-size:18px;}
+  .card:hover{transform:none;}
+}
+
+@media (max-width: 760px){
+  .container{margin:16px auto; gap:12px;}
+  .row{gap:10px; align-items:flex-start;}
+  label{min-width:unset;}
+  .result-grid{grid-template-columns: repeat(2, minmax(0,1fr));}
+  .switch{min-width:unset;}
+  .card:hover{transform:none;}
+}
+
+
+@media (prefers-reduced-motion: reduce){
+  *{scroll-behavior:auto;}
+  .card, button{transition:none !important; transform:none !important;}
+}
+
+#confettiCanvas{
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height:100vh;
+  pointer-events:none;
+  z-index:9999;
+}
+
+
+
+.result-item{
+  position:relative;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01));
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:14px;
+  padding:14px;
+
+  box-shadow:
+    0 16px 28px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.10),
+    inset 0 -12px 24px rgba(0,0,0,.35);
+}
+.result-item::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:14px;
+  pointer-events:none;
+  background: linear-gradient(90deg, rgba(47,155,255,.12), rgba(255,47,85,.10));
+  opacity:.6;
+  mix-blend-mode:screen;
+}
+.result-item > *{position:relative; z-index:1}
+.result-item:hover{
+  transform: translateY(-2px);
+  transition: transform .18s ease;
+}
+.label{color:var(--muted); font-size:13px; font-weight:800; margin-bottom:6px}
+.value{font-size:20px; font-weight:1000}
+hr{border:none; height:1px; background: linear-gradient(90deg, rgba(47,155,255,.10), rgba(255,47,85,.14), rgba(255,255,255,.08)); margin:14px 0}
+.converted p{margin:8px 0; color:var(--muted); font-size:14px}
+.converted strong{color:var(--text)}
+.note{margin:10px 0 0; color:rgba(234,241,255,.65); font-size:12px}
+
+button#themeToggle{
+  white-space:nowrap;
+}
+
+/* إظهار/إخفاء عناصر الـ Topbar بشكل سلس */
+.topbar .theme-toggle button{
+  min-height:44px;
+}
+
+/* Tabs */
+.tabs{ }
+.tab-buttons{
+  display:flex;
+  gap:10px;
+  margin-top:2px;
+  flex-wrap:wrap;
+}
+.tab-button{
+  background: transparent;
+  border:1px solid rgba(255,255,255,.18);
+  color:var(--text);
+  padding:10px 14px;
+  border-radius:12px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    inset 0 -10px 22px rgba(0,0,0,.20);
+}
+.tab-button:hover{
+  border-color: rgba(47,155,255,.65);
+  box-shadow:
+    0 0 0 3px rgba(47,155,255,.12),
+    inset 0 1px 0 rgba(255,255,255,.10),
+    inset 0 -10px 22px rgba(0,0,0,.20);
+}
+.tab-button.active{
+  background: linear-gradient(180deg, rgba(47,155,255,1), rgba(47,155,255,.86));
+  color:#031226;
+  border-color: rgba(47,155,255,.9);
+}
+.tab-panel{ }
+.tab-panel.active{ }
+.tab-panel-inner{ }
+
+.result-wrap hr{margin:14px 0;}
+
+@media (max-width: 480px){
+  .tab-buttons{gap:8px;}
+  .tab-button{width:100%;}
+}
+
+
+
+
+
+
