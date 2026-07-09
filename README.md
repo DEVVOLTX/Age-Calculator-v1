@@ -1,14 +1,65 @@
-# AmrEssam## 🌐 Socials:
-[![Facebook](https://img.shields.io/badge/Facebook-%231877F2.svg?logo=Facebook&logoColor=white)](https://facebook.com/https://www.facebook.com/share/1JyRCKVKwG/) [![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://instagram.com/https://www.instagram.com/3am_our1430?igsh=MXc5bHo2M2Nwc3o4MA==) [![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?logo=YouTube&logoColor=white)](https://youtube.com/@https://youtube.com/@amr10119?si=QOlxBZhm0fioZJob) 
+# Age-Calculator-v1
 
-# 💻 Tech Stack:
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Bash Script](https://img.shields.io/badge/bash_script-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white) ![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-%234D4D4D.svg?style=for-the-badge&logo=windows-terminal&logoColor=white) ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white) ![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white) ![Three js](https://img.shields.io/badge/threejs-black?style=for-the-badge&logo=three.js&logoColor=white) ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white) ![Adobe Photoshop](https://img.shields.io/badge/adobe%20photoshop-%2331A8FF.svg?style=for-the-badge&logo=adobe%20photoshop&logoColor=white) ![Canva](https://img.shields.io/badge/Canva-%2300C4CC.svg?style=for-the-badge&logo=Canva&logoColor=white) ![Blender](https://img.shields.io/badge/blender-%23F5792A.svg?style=for-the-badge&logo=blender&logoColor=white)
-# 📊 GitHub Stats:
-![](https://github-readme-stats.vercel.app/api?username=DEVVOLTX &theme=shadow_green&hide_border=false&include_all_commits=false&count_private=false)<br/>
-![](https://nirzak-streak-stats.vercel.app/?user=DEVVOLTX &theme=shadow_green&hide_border=false)<br/>
-![](https://github-readme-stats.vercel.app/api/top-langs/?username=DEVVOLTX &theme=shadow_green&hide_border=false&include_all_commits=false&count_private=false&layout=compact)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-7c5cbf?style=for-the-badge)](https://devvoltx.github.io/Age-Calculator-v1)
+[![GitHub](https://img.shields.io/badge/GitHub-DEVVOLTX-00d4d4?style=for-the-badge)](https://github.com/DEVVOLTX/Age-Calculator-v1)
 
----
-[![](https://visitcount.itsvg.in/api?id=DEVVOLTX &icon=0&color=0)](https://visitcount.itsvg.in)
+تطبيق ويب بسيط لحساب العمر (سنوات، أشهر، أيام) بناءً على تاريخ الميلاد الذي يدخلها المستخدم.
 
-<!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
+> مشروع تعليمي وخفيف مناسب لتعلّم التعامل مع التواريخ في JavaScript وبناء واجهات بسيطة ومتجاوبة.
+
+## ✨ المميزات
+- حساب العمر بالسنوات، الأشهر، والأيام.
+- التحقق من صحة الإدخال (منع تواريخ مستقبلية).
+- تنبيه عند إدخال تاريخ غير صالح.
+- واجهة بسيطة وسهلة الاستخدام ومتجاوبة مع الشاشات المختلفة.
+- خفيف ولا يحتاج إلى خادم — يمكن تشغيله محليًا بفتح index.html.
+
+## 🛠️ التقنيات المستخدمة
+- HTML5
+- CSS3
+- JavaScript (Vanilla)
+
+## 📸 معاينة
+أضف صورة أو GIF لواجهة التطبيق هنا (مثال: نتائج الحساب بعد الضغط على زر "احسب").
+
+## 📂 هيكل المشروع (مُشابه للتالي)
+- index.html — الصفحة الرئيسية
+- css/ — ملفات الأنماط (styles.css)
+- js/ — سكربتات JavaScript (app.js)
+- assets/ — صور أو أي موارد أخرى
+
+(قد يختلف الهيكل الفعلي داخل المستودع)
+
+## 🚀 تشغيل المشروع محلياً
+1. استنسخ المستودع:
+   git clone https://github.com/DEVVOLTX/Age-Calculator-v1.git
+
+2. ادخل المجلد:
+   cd Age-Calculator-v1
+
+3. افتح التطبيق:
+   - ببساطة افتح `index.html` في المتصفح (مثلاً: افتح الملف بالنقر المزدوج).
+   - أو استخدم خادم محلي (للاختبار الأفضل):
+     - عبر Python 3:
+       python -m http.server 8000
+       ثم افتح: http://localhost:8000
+
+## كيفية الاستخدام
+1. افتح التطبيق في المتصفح.
+2. اختر تاريخ الميلاد من حقل التاريخ.
+3. اضغط زر "احسب" أو ما يكافئه لعرض العمر بالسنوات، الأشهر، والأيام.
+4. ستظهر رسائل خطأ إذا كان التاريخ في المستقبل أو غير مُدخل.
+
+## المساهمة
+المساهمات مرحب بها! يمكنك:
+- فتح Issue لاقتراح ميزة أو الإبلاغ عن خطأ.
+- فتح Pull Request لتحسين الواجهة، دعم لغات أخرى، أو إضافة اختبارات.
+
+نقترح اتباع هذا التدفق: افرع من `main` → اعمل تعديلك → افتح PR مع وصف واضح.
+
+## الترخيص
+مرخّص بموجب MIT — استخدمه وعدّله بحرية. أضف ملف LICENSE إن أردت تفصيلًا رسميًا.
+
+## تواصل
+- GitHub: [@DEVVOLTX](https://github.com/DEVVOLTX)
+- إذا رغبت أساعد في نشر Demo عبر GitHub Pages أو تعديل الواجهة أو إضافة دعم للغات أخرى — أقولك أعمل إيه وأطبقها لك.
