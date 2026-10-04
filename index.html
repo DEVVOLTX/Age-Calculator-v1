@@ -4,6 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Age Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -93,12 +96,16 @@
             <div class="value" id="ageYears">-</div>
           </div>
           <div class="result-item">
-            <div class="label">الأشهر</div>
+            <div class="label">الأشهر (بعد السنوات)</div>
             <div class="value" id="ageMonths">-</div>
           </div>
           <div class="result-item">
-            <div class="label">الأيام</div>
+            <div class="label">الأيام (بعد الأشهر)</div>
             <div class="value" id="ageDays">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">إجمالي الأيام</div>
+            <div class="value" id="ageTotalDays">-</div>
           </div>
           <div class="result-item">
             <div class="label">الثواني</div>
@@ -217,12 +224,16 @@
             <div class="value" id="annYears">-</div>
           </div>
           <div class="result-item">
-            <div class="label">الأشهر</div>
+            <div class="label">الأشهر (بعد السنوات)</div>
             <div class="value" id="annMonths">-</div>
           </div>
           <div class="result-item">
-            <div class="label">الأيام</div>
+            <div class="label">الأيام (بعد الأشهر)</div>
             <div class="value" id="annDays">-</div>
+          </div>
+          <div class="result-item">
+            <div class="label">إجمالي الأيام</div>
+            <div class="value" id="ageTotalDays">-</div>
           </div>
           <div class="result-item">
             <div class="label">الثواني</div>
@@ -239,4 +250,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
