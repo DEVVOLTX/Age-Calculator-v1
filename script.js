@@ -2,6 +2,9 @@
 
 const $ = (id) => document.getElementById(id);
 
+let __silent = false;
+function notify(msg) { if (!__silent) alert(msg); }
+
 const birthDayEl = $("birthDay");
 const birthMonthEl = $("birthMonth");
 const birthYearEl = $("birthYear");
@@ -12,17 +15,16 @@ const clearBtn = $("clearBtn");
 const setTodayBtn = $("setToday");
 const todayWeekdayEl = $("todayWeekday");
 
-
 const ageYearsEl = $("ageYears");
 const ageMonthsEl = $("ageMonths");
 const ageDaysEl = $("ageDays");
 const ageSecondsEl = $("ageSeconds");
+const ageTotalDaysEl = $("ageTotalDays");
 
 const nextBirthDaysEl = $("nextBirthDays");
 const nextBirthHoursEl = $("nextBirthHours");
 const nextBirthMinutesEl = $("nextBirthMinutes");
 const nextBirthSecondsEl = $("nextBirthSeconds");
-
 
 const birthMiladiText = $("birthMiladiText");
 const birthHijriText = $("birthHijriText");
@@ -36,7 +38,6 @@ const historicalEventEl = $("historicalEvent");
 
 const themeToggleBtn = $("themeToggle");
 const themeLabelEl = $("themeLabel");
-
 
 // ---------- Hijri <-> Miladi (Civil/Tabular approximation) ----------
 // Uses widely-used arithmetic algorithm. Good for typical calculators.
@@ -138,10 +139,16 @@ function diffYMD(fromDate, toDate) {
   }
 
   // Now candidate <= toDate
-  const msPerDay = 24 * 60 * 60 * 1000;
-  const days = Math.floor((toDate - candidate) / msPerDay);
+  const days = daysBetween(candidate, toDate);
 
   return { years, months, days };
+}
+
+// DST-safe whole-day difference (both dates are local midnights)
+function daysBetween(a, b) {
+  const ua = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+  const ub = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+  return Math.round((ub - ua) / 86400000);
 }
 
 function formatDateAr({ year, month, day }, monthNames) {
@@ -192,8 +199,6 @@ function showToday() {
   todayHijriText.textContent = `${h.day} ${monthNamesHijri[h.month - 1]} ${h.year}`;
 }
 
-
-
 function setInputsToToday() {
   // Ensure month select labels match current calendar type.
   renderBirthMonthOptions();
@@ -213,8 +218,6 @@ function setInputsToToday() {
     birthYearEl.value = g.year;
   }
 }
-
-
 
 function parseInputs() {
   const day = Number(birthDayEl.value);
@@ -278,16 +281,19 @@ const historicalEventsByYear = {
   2001: "هجمات 11 سبتمبر",
   2007: "إطلاق iPhone (بدء حقبة الهواتف الذكية)",
   2008: "الأزمة المالية العالمية (Great Recession)",
+  2000: "دخول الألفية الجديدة ومخاوف مشكلة الألفية (Y2K)",
+  2004: "تسونامي المحيط الهندي",
+  2009: "إطلاق عملة بيتكوين",
   2010: "انتشار الربيع العربي وموجة الاحتجاجات في المنطقة",
-  2012: "إطلاق أول قمر صناعي لنظام تحديد المواقع (عمومًا وصولات كبيرة في الفضاء)",
+  2012: "هبوط المركبة كيوريوسيتي على سطح المريخ",
+  2011: "ثورة 25 يناير في مصر",
   2016: "توقيع اتفاق باريس للمناخ (COP21)",
   2020: "بداية جائحة كوفيد-19 عالميًا"
 };
 
 function getHistoricalEventByYear(year) {
   if (historicalEventsByYear[year]) return historicalEventsByYear[year];
-  // Fallback: generic world event phrase
-  return `حدث عالمي مشهور في ${year} (تقريبي)`;
+  return "لا يوجد حدث مسجل لهذه السنة";
 }
 
 function sameYMD(d1, d2) {
@@ -311,7 +317,7 @@ function getNextBirthdayMiladiDate({ birthDay, birthMonth }, fromDate = new Date
   })();
 
   let candidate = startOfDay(new Date(year, normalizedBirth.month - 1, normalizedBirth.day));
-  if (candidate < base) {
+  if (candidate <= base) {
     const nextYear = year + 1;
 
     const normalizedNext = (() => {
@@ -363,8 +369,6 @@ function renderNextBirthCountdown(targetDate) {
   __nextBirthdayInterval = setInterval(tick, 1000);
 }
 
-
-
 function fireBirthdayConfettiOnce() {
   try {
     if (window.__confettiFired) return;
@@ -415,24 +419,15 @@ function loadPersistedBirthInputs() {
   }
 }
 
-function calc() {
-  const input = parseInputs();
-  if (!input) {
-    alert("ادخل تاريخ صحيح (يوم/شهر/سنة). ");
-    return;
-  }
+function safeGetTheme() {
+  try { return localStorage.getItem("theme"); } catch (e) { return null; }
+}
 
-  // Persist user inputs for next visit
-  persistBirthInputs(input);
-
-  const today = startOfDay(new Date());
-
-
-  // theme init (one-time)
+function initTheme() {
 
   if (themeToggleBtn && !themeToggleBtn.dataset.inited) {
     themeToggleBtn.dataset.inited = "1";
-    const saved = localStorage.getItem("theme");
+    const saved = safeGetTheme();
     const initial = saved || "dark";
     document.documentElement.setAttribute("data-theme", initial);
     themeLabelEl.textContent = initial === "light" ? "فاتح" : "داكن";
@@ -441,23 +436,35 @@ function calc() {
       const current = document.documentElement.getAttribute("data-theme") || "dark";
       const next = current === "light" ? "dark" : "light";
       document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
       themeLabelEl.textContent = next === "light" ? "فاتح" : "داكن";
     });
   }
+}
 
+function calc() {
+  const input = parseInputs();
+  if (!input) {
+    notify("ادخل تاريخ صحيح (يوم/شهر/سنة). ");
+    return;
+  }
+
+  // Persist user inputs for next visit
+  persistBirthInputs(input);
+
+  const today = startOfDay(new Date());
 
   let miladi;
   if (calendarTypeEl.checked) {
     // hijri input => convert to miladi
     const hijri = { year: input.year, month: input.month, day: input.day };
     if (!validateHijri(hijri)) {
-      alert("تاريخ هجري غير صحيح.");
+      notify("تاريخ هجري غير صحيح.");
       return;
     }
     miladi = hijriToGregorian(hijri);
     if (!validateGregorian(miladi)) {
-      alert("تعذر تحويل التاريخ الهجري إلى ميلادي.");
+      notify("تعذر تحويل التاريخ الهجري إلى ميلادي.");
       return;
     }
 
@@ -469,7 +476,7 @@ function calc() {
   } else {
     miladi = { year: input.year, month: input.month, day: input.day };
     if (!validateGregorian(miladi)) {
-      alert("تاريخ ميلادي غير صحيح.");
+      notify("تاريخ ميلادي غير صحيح.");
       return;
     }
     const birthHijri = gregorianToHijri(miladi);
@@ -481,12 +488,13 @@ function calc() {
   const birthDate = startOfDay(new Date(miladi.year, miladi.month - 1, miladi.day));
 
   if (birthDate > today) {
-    alert("تاريخ الميلاد لازم يكون قبل أو يساوي تاريخ اليوم.");
+    notify("تاريخ الميلاد لازم يكون قبل أو يساوي تاريخ اليوم.");
     return;
   }
 
   const { years, months, days } = diffYMD(birthDate, today);
-  const seconds = Math.floor((today - birthDate) / 1000);
+  const totalDays = daysBetween(birthDate, today);
+  const seconds = totalDays * 86400;
 
   // Update "لقد ولدت في يوم ..." based on birth date (miladi)
   todayWeekdayEl.textContent = getWeekdayAr(birthDate);
@@ -496,6 +504,7 @@ function calc() {
   ageMonthsEl.textContent = months;
   ageDaysEl.textContent = days;
   ageSecondsEl.textContent = new Intl.NumberFormat('ar-EG').format(seconds);
+  ageTotalDaysEl.textContent = new Intl.NumberFormat('ar-EG').format(totalDays);
 
   // Zodiac + Generation + Historical Event
   zodiacSignEl.textContent = getZodiacSignMiladi(miladi.day, miladi.month);
@@ -526,14 +535,13 @@ function calc() {
     const birthM = miladi.month;
     const birthD = miladi.day;
 
-    if (birthY === todayY && birthM === todayM && birthD === todayD) {
+    if (birthM === todayM && birthD === todayD) {
       fireBirthdayConfettiOnce();
     }
   } catch (e) {
     // ignore
   }
 }
-
 
 function clearAll() {
   birthDayEl.value = "";
@@ -543,7 +551,6 @@ function clearAll() {
   // Reset calendar type UI to default miladi.
   calendarTypeEl.checked = false;
   renderBirthMonthOptions();
-
 
   // Clear persisted birth date
   try {
@@ -559,6 +566,7 @@ function clearAll() {
   ageMonthsEl.textContent = "-";
   ageDaysEl.textContent = "-";
   ageSecondsEl.textContent = "-";
+  ageTotalDaysEl.textContent = "-";
   nextBirthDaysEl.textContent = "-";
   nextBirthHoursEl.textContent = "-";
   nextBirthMinutesEl.textContent = "-";
@@ -567,8 +575,6 @@ function clearAll() {
   birthMiladiText.textContent = "-";
   birthHijriText.textContent = "-";
 }
-
-
 
 calendarTypeEl.addEventListener("change", () => {
   // Switch month label names (values remain 1..12).
@@ -708,7 +714,7 @@ function calcAnnDiff() {
   const b = isFuture ? fromDate : toDate;
 
   const { years, months, days } = diffYMD(a, b);
-  const seconds = Math.floor((b - a) / 1000);
+  const seconds = daysBetween(a, b) * 86400;
 
   annYearsEl.textContent = new Intl.NumberFormat('ar-EG').format(years);
   annMonthsEl.textContent = new Intl.NumberFormat('ar-EG').format(months);
@@ -744,13 +750,10 @@ if (!loadPersistedBirthInputs()) {
   setInputsToToday();
 }
 
+initTheme();
+__silent = true;
 calc();
+__silent = false;
 
 // Ensure initial tab state matches UI markup
 setActiveTab('personal');
-
-
-
-
-
-
